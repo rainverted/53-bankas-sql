@@ -5,8 +5,8 @@ const db = {}
 db.init = async ({ database, host, user }) => {
     const connection = await db.createDatabase({ database, host, user });
 
-    await db.createTableAuthor(connection);
-    await db.createTableBooks(connection);
+    await db.createTableUser(connection);
+    await db.createTableAccount(connection);
 
     return connection;
 }
@@ -36,7 +36,7 @@ db.createDatabase = async ({ database, host, user }) => {
     }
 }
 
-db.createTableAuthor = async (connection) => {
+db.createTableUser = async (connection) => {
     try {
         const sql = 'CREATE TABLE IF NOT EXISTS `users` (\
                         `id` int(10) NOT NULL AUTO_INCREMENT,\
@@ -52,7 +52,7 @@ db.createTableAuthor = async (connection) => {
     }
 }
 
-db.createTableBooks = async (connection) => {
+db.createTableAccount = async (connection) => {
     try {
         const sql = 'CREATE TABLE IF NOT EXISTS `accounts` (\
                         `id` int(10) NOT NULL AUTO_INCREMENT,\

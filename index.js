@@ -25,19 +25,26 @@ app.init = async () => {
     console.log(user4);
     console.log('');
 
+    const userList = await User.allList(conn);
+    console.log(userList);
+
+
     //ACCOUNTS
     //jei spausdiname teksta account.js loginti dar karta nereikia
-    const account1 = await Account.create(conn, 1, 'EUR');
-    console.log(account1);
-    const account2 = await Account.create(conn, 2, 'EUR');
-    console.log(account2);
-    const account3 = await Account.create(conn, 3, 'EUR');
-    console.log(account3);
-    const account4 = await Account.create(conn, 4, 'EUR');
-    console.log(account4);
+    //const account1 = await Account.create(conn, 1, 'EUR');
+    //console.log(account1);
+    //const account2 = await Account.create(conn, 2, 'EUR');
+    //console.log(account2);
+    //const account3 = await Account.create(conn, 3, 'EUR');
+    //console.log(account3);
+    //const account4 = await Account.create(conn, 4, 'EUR');
+    //console.log(account4);
+
+    // const deposit1 = await Account.depositMoneybyId(conn, 2, 'balance', 20);
+    // console.log(deposit1);
+    // console.log('');
 
 }
-
 app.init();
 
 module.exports = app;

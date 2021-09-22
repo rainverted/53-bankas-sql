@@ -13,13 +13,32 @@ User.create = async (connection, userFirstname, userLastname) => {
                     (`id`, `firstname`, `lastname`)\
                     VALUES (NULL, "' + userFirstname + '","' + userLastname + '")';
     const [rows] = await connection.execute(sql);
-    await Account.create(connection, 2, 'EUR');
-    return `Naujas banko vartotojas užregistruotas: ${userFirstname} ${userLastname}. `;
+    const user_Id = rows.insertId;              //kintamasis, kuris sujungiamas su account.create metode duodamu ID
+    const newAccount = await Account.create(connection, user_Id, 'EUR');
+    return `Naujas banko vartotojas užregistruotas: ${userFirstname} ${userLastname}, ID - ${user_Id}. `;
 }
 
-User.depositMoneybyId = async (connection) => {
-
+/**
+ * Visu vartotoju sarasas su sukurtomis saskaitomis
+ * @param {object} connection Objektas, su kuriuo kvieciame duombazes mainpuliavimo metodus.
+ * @returns {Promise<Object[]>} Tekstas, apibudinantis, koks vartotojas ir sąsakaitos nr.
+ */
+User.allList = async (connection) => {
+    const sql = 'SELECT `firstname`, `lastname`, `account_no`\
+                FROM `users`\
+                LEFT JOIN `accounts`\
+                    ON `users`.`id` = `accounts`.`user_Id`';
+    const [rows] = await connection.execute(sql);
+    const list = [];
+    let i = 0;
+    for (const { firstname, lastname, account_no } of rows) {
+        list.push(`${++i}) ${firstname} ${lastname} sąskaitos nr. ${account_no}.`);
+    };
+    const title = 'Visų vartotojų sąrašas:\n';
+    return title + list.join('\n');
 }
+
+
 
 module.exports = User;
 

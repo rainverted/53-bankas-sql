@@ -34,5 +34,14 @@ function createAccNumber(length) {
 }
 
 
+// Account.depositMoneybyId = async (connection, user_Id, propertyName, propertyValue) => {
+//     const sql = 'UPDATE `accounts`\
+//                 SET `'+ propertyName + '`= "' + propertyValue + '" \
+//                 WHERE `user_Id` =' + user_Id;
+//     const [rows] = await connection.execute(sql);
+//     return `Į sąskaita įnešta pinigų suma: ${propertyValue} EUR`;
+// }
+
+
 
 module.exports = Account;
