@@ -27,6 +27,11 @@ app.init = async () => {
 
     const userList = await User.allList(conn);
     console.log(userList);
+    console.log('');
+
+    const userById = await User.findById(conn, 2);
+    console.log(userById);
+    console.log('');
 
 
     //ACCOUNTS
@@ -40,9 +45,31 @@ app.init = async () => {
     //const account4 = await Account.create(conn, 4, 'EUR');
     //console.log(account4);
 
-    // const deposit1 = await Account.depositMoneybyId(conn, 2, 'balance', 20);
-    // console.log(deposit1);
-    // console.log('');
+    const deposit1 = await Account.depositMoneybyId(conn, 2, 20);
+    console.log(deposit1);
+    const deposit2 = await Account.depositMoneybyId(conn, 1, 100);
+    console.log(deposit2);
+    const deposit3 = await Account.depositMoneybyId(conn, 3, 15);
+    console.log(deposit3);
+    const deposit4 = await Account.depositMoneybyId(conn, 4, 25);
+    console.log(deposit4);
+    const deposit5 = await Account.depositMoneybyId(conn, 2, 20);
+    console.log(deposit5);
+    console.log('');
+
+    const withdraw1 = await Account.withdrawMoneybyId(conn, 1, 50);
+    console.log(withdraw1);
+    const withdraw2 = await Account.withdrawMoneybyId(conn, 3, 10);
+    console.log(withdraw2);
+    const withdraw3 = await Account.withdrawMoneybyId(conn, 3, 15);
+    console.log(withdraw3);
+    console.log('');
+
+    const balance1 = await Account.balance(conn, 3);
+    console.log(balance1);
+    const balance2 = await Account.balance(conn, 4);
+    console.log(balance2);
+    console.log('');
 
 }
 app.init();

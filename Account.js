@@ -33,14 +33,50 @@ function createAccNumber(length) {
     return 'LT' + result;
 }
 
+/**
+ * Pinigu inesimas i nurodyta saskaita
+ * @param {Object} connection Objektas, su kuriuo kvieciame duombazes mainpuliavimo metodus.
+ * @param {number} user_id Vartotojo saskaitos ID
+ * @param {number} amount pinigu suma
+ * @returns {Promise<string>} tekstas, kuris nurodo, kad duota pinigu suma inesta i saskaita
+ */
+Account.depositMoneybyId = async (connection, user_Id, amount) => {
+    const sql = 'UPDATE `accounts`\
+                SET `balance`= `balance` + ' + amount + ' \
+                WHERE `id` =' + user_Id;
+    const [rows] = await connection.execute(sql);
+    return `Į sąskaita įnešta pinigų suma: ${amount} EUR.`;
+}
 
-// Account.depositMoneybyId = async (connection, user_Id, propertyName, propertyValue) => {
-//     const sql = 'UPDATE `accounts`\
-//                 SET `'+ propertyName + '`= "' + propertyValue + '" \
-//                 WHERE `user_Id` =' + user_Id;
-//     const [rows] = await connection.execute(sql);
-//     return `Į sąskaita įnešta pinigų suma: ${propertyValue} EUR`;
-// }
+
+Account.withdrawMoneybyId = async (connection, user_Id, amount) => {
+    //metodas balance reikalingas tam,kad negaletume nusiimti daugiau pinigu nei turima saskaitoje
+    let balance = await Account.balance(connection, user_Id);
+    if (amount > balance) {
+        return `Sąskaitoje nėra pakankamai pinigų.`;
+    }
+    const sql = 'UPDATE `accounts`\
+                 SET `balance` = `balance` - ' + amount + ' \
+                 WHERE `id` = ' + user_Id;
+    const [rows] = await connection.execute(sql);
+    return `Iš sąskaitos išimta pinigų suma: ${amount} EUR.`;
+}
+
+/**
+ * Pateikia esama saskaitos balansa
+ * @param {Object} connection Objektas, su kuriuo kvieciame duombazes mainpuliavimo metodus.
+ * @param {number} user_Id Vartotojo saskaitos ID
+ * @returns {Promise<number>} Informacija apie saskaitos likuti
+ */
+Account.balance = async (connection, user_Id) => {
+    const sql = 'SELECT * \
+                FROM `accounts` \
+                WHERE `id` = ' + user_Id;
+    const [rows] = await connection.execute(sql);
+    //return `ID ${user_Id} dabartinis balansas - rows[0].balance EUR.`;
+    return rows[0].balance;
+}
+
 
 
 

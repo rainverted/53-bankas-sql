@@ -38,6 +38,18 @@ User.allList = async (connection) => {
     return title + list.join('\n');
 }
 
+User.findById = async (connection, user_Id) => {
+    const sql = 'SELECT *\
+                FROM `users`\
+                WHERE `id` = '+ user_Id;
+    const [rows] = await connection.execute(sql);
+
+    for (const { firstname, lastname } of rows) {
+        if (rows.length === 0) {
+        }
+        return `Ieškomas vartotojas pagal ID ${user_Id} yra ${firstname} ${lastname}.`;
+    }
+}
 
 
 module.exports = User;

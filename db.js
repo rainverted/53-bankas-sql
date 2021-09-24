@@ -59,7 +59,7 @@ db.createTableAccount = async (connection) => {
                         `user_Id` int(10) NOT NULL,\
                         `account_no` char(20) COLLATE utf8_swedish_ci NOT NULL,\
                         `currency` char(10) COLLATE utf8_swedish_ci NOT NULL,\
-                        `balance` int(20) DEFAULT 0 NOT NULL,\
+                        `balance` float(12,2) DEFAULT 0 NOT NULL,\
                         PRIMARY KEY(`id`)\
                     ) ENGINE = InnoDB DEFAULT CHARSET = utf8 COLLATE = utf8_swedish_ci';
         await connection.execute(sql);
