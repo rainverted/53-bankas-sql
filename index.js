@@ -71,6 +71,9 @@ app.init = async () => {
     console.log(balance2);
     console.log('');
 
+    const transfer1 = await Account.transferMoney(conn, 1, 4, 10);
+    console.log(transfer1);
+
 }
 app.init();
 

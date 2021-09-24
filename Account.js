@@ -77,7 +77,37 @@ Account.balance = async (connection, user_Id) => {
     return rows[0].balance;
 }
 
+Account.transferMoney = async (connection, sender_account_id, receiver_account_id, amount) => {
+    //pinigu pervedimas i kita saskaita
+    let balance = await Account.balance(connection, sender_account_id);
+    if (amount > balance) {
+        return `Sąskaitoje nėra pakankamai pinigų.`;
+    }
+    const sendAmount = await Account.withdrawMoneybyId(connection, sender_account_id, amount);
+    const receivedAmount = await Account.depositMoneybyId(connection, receiver_account_id, amount);
+    return `Suma ${amount} EUR pervesta nurodytam vartotojui!`
+}
 
+// Account.delete = async (connection, account_id) => {
+//     let accountStatus = await Account.isActive(connection, account_id);
+//     if (!accountStatus) {
+//         return "tranzakcija negalima, saskaita neegzistuoja";
+//     }
 
+//     let balance = await Account.balance(connection, account_id);
+//     if (balance !== 0) {
+//         return "atleisk, bet negalima i trint kai tiek pinigeliu like!"
+
+//     }
+//     const sql = 'UPDATE`accounts` SET `active` = "FALSE" WHERE`accounts`.`id` =' + account_id;
+//     const [rows] = await connection.execute(sql);
+//     return `saskaita sekmingai istrinta!`
+// }
+
+Account.isActive = async (connection, account_id) => {
+    const sql = 'SELECT `active` FROM `accounts` WHERE `accounts`.`id` =' + account_id;
+    const [rows] = await connection.execute(sql)
+    return rows[0].active === "TRUE";
+}
 
 module.exports = Account;
